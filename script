@@ -1,0 +1,25 @@
+#!/bin/bash
+/sbin/ifconfig | head -n 1 |cut -d : -f 1 > ifcfg
+cat ifcfg
+netw=$(cat ifcfg)
+read -p "输入您IP地址的最后一位：192.168.18." z
+echo $z
+echo "TYPE=Ethernet
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=eno16777736
+UUID=b2ea4c22-7bd8-4156-a210-b0e9a5b6ce6f
+DEVICE=eno16777736
+ONBOOT=yes
+
+IPADDR=192.168.18.$z
+PREFIX=24
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes" > /etc/sysconfig/network-scripts/ifcfg-$netw
+systemctl restart network
+rm -rf ifcfg
